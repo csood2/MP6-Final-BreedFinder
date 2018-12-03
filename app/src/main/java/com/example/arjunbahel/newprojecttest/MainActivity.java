@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -50,7 +51,7 @@ public class MainActivity extends Activity {
                 imgView.setImageBitmap(BitmapFactory
                                 .decodeFile(imgDecodableString));
             } else {
-                Toast.makeText(this, "You haven't picked Image",
+                Toast.makeText(this, "You have not picked an Image",
                         Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
