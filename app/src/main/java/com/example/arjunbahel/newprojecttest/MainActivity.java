@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Path;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,7 +19,61 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.Base64;
 public class MainActivity extends Activity {
+    public final static String TAG = "BREEDPROOOOKGBIBUGHSIDUFBWUHFB UEGFBOUIEFBIEHBS OISCI B@!!!!@@!@@";
 
 
     private boolean checkPermission() {
@@ -37,11 +93,7 @@ public class MainActivity extends Activity {
             return false;
         }
     }
-
-
-
-
-
+    Uri selectedImage;
 
 
 
@@ -61,6 +113,51 @@ public class MainActivity extends Activity {
         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
 
     }
+
+    public static RequestQueue requestQueue;
+
+
+    void startAPICall() {
+        Log.d(TAG, "here");
+        try {
+            JSONObject req = new JSONObject();
+            JSONArray array = new JSONArray();
+            JSONObject src = new JSONObject();
+            src.put("imageUri", selectedImage);
+            JSONObject img = new JSONObject();
+            img.put("source", src);
+            req.put("requests", array);
+            JSONObject tp = new JSONObject();
+            tp.put("Type", "LABEL_DETECTION");
+            tp.put("maxResults", "10");
+            array.put(0, img);
+            JSONArray ftr = new JSONArray();
+            ftr.put(0, tp);
+            array.put(1, ftr);
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.POST,
+                    "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDrMcXc0mjGsTKUYTJ35f6jn7dUD4Z8hxI", req,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(final JSONObject response) {
+                            TextView textView = findViewById(R.id.textView);
+                            Log.d(TAG, response.toString());
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(final VolleyError error) {
+                    Log.w(TAG, error.toString());
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -73,7 +170,8 @@ public class MainActivity extends Activity {
             if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
                     && null != data) {
                 // Get the Image from data
-                Uri selectedImage = data.getData();
+                selectedImage = data.getData();
+                startAPICall();
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
                 // Get the cursor
                 Cursor cursor = getContentResolver().query(selectedImage,
@@ -87,6 +185,8 @@ public class MainActivity extends Activity {
                 // Set the Image in ImageView after decoding the String
                 imgView.setImageBitmap(BitmapFactory
                                 .decodeFile(imgDecodableString));
+
+
             } else {
                 Toast.makeText(this, "You have not picked an Image",
                         Toast.LENGTH_LONG).show();
@@ -96,4 +196,8 @@ public class MainActivity extends Activity {
                     .show();
         }
     }
+    public void processResponse(JSONObject response) {
+        return;
+    }
+
 }

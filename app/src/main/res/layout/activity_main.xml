@@ -10,7 +10,7 @@
         android:id="@+id/imgView"
         android:layout_width="327dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="1dp"
         android:background="@android:drawable/divider_horizontal_dark"
         android:src="@drawable/ic_launcher_foreground"
         app:layout_constraintBottom_toTopOf="@+id/buttonLoadPicture"
@@ -21,9 +21,9 @@
 
     <Button
         android:id="@+id/buttonLoadPicture"
-        android:layout_width="156dp"
+        android:layout_width="328dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
         android:onClick="loadImagefromGallery"
         android:text="Choose Picture"
         android:textStyle="bold"
@@ -41,17 +41,5 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/buttonLoadPicture"
         app:layout_constraintTop_toBottomOf="@+id/buttonLoadPicture" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="156dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
-        android:text="Take Picture"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgView"
-        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>
