@@ -1,5 +1,7 @@
 package com.example.arjunbahel.newprojecttest;
 
+
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -34,7 +36,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import android.Manifest;
@@ -61,6 +66,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,12 +75,15 @@ import java.util.List;
 import java.util.Locale;
 
 
+
+
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Base64;
 public class MainActivity extends Activity {
-    public final static String TAG = "BREEDPROOOOKGBIBUGHSIDUFBWUHFB UEGFBOUIEFBIEHBS OISCI B@!!!!@@!@@";
+    public final static String TAG = "BREEDPROO";
 
 
     private boolean checkPermission() {
@@ -93,7 +103,6 @@ public class MainActivity extends Activity {
             return false;
         }
     }
-    Uri selectedImage;
 
 
 
@@ -103,6 +112,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        requestQueue = Volley.newRequestQueue(this);
     }
 
     public void loadImagefromGallery(View view) {
@@ -117,41 +127,56 @@ public class MainActivity extends Activity {
     public static RequestQueue requestQueue;
 
 
-    void startAPICall() {
+    void startAPICall(String givenImage) {
         Log.d(TAG, "here");
         try {
+            Log.d(TAG, givenImage);
+            Log.d(TAG, "try");
             JSONObject req = new JSONObject();
             JSONArray array = new JSONArray();
             JSONObject src = new JSONObject();
-            src.put("imageUri", selectedImage);
+            src.put("imageUri", givenImage);
             JSONObject img = new JSONObject();
             img.put("source", src);
             req.put("requests", array);
+            JSONObject myobj = new JSONObject();
+            myobj.put("image", img);
+            array.put(0, myobj);
             JSONObject tp = new JSONObject();
-            tp.put("Type", "LABEL_DETECTION");
-            tp.put("maxResults", "10");
-            array.put(0, img);
+            tp.put("type", "LABEL_DETECTION");
+            tp.put("maxResults", 10);
             JSONArray ftr = new JSONArray();
             ftr.put(0, tp);
-            array.put(1, ftr);
+            myobj.put("features", ftr);
+            Log.d(TAG, "JSON created");
+            Log.d(TAG, req.toString());
+
+            final JSONObject toSend = req;
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.POST,
-                    "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDrMcXc0mjGsTKUYTJ35f6jn7dUD4Z8hxI", req,
+                    "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyD8I4WVl_Ob3pWBLsz_HJ8aEhQi1ordCKw",
+                    toSend,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(final JSONObject response) {
-                            TextView textView = findViewById(R.id.textView);
-                            Log.d(TAG, response.toString());
+                            Log.d(TAG, "in response thing");
+                            processResponse(response);
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(final VolleyError error) {
+                    Log.w(TAG, "problem");
                     Log.w(TAG, error.toString());
                 }
             });
+            Log.d(TAG, "before requestQueue");
+            Log.d(TAG, jsonObjectRequest.toString());
             requestQueue.add(jsonObjectRequest);
+            Log.d(TAG, "after requestQueue");
         } catch (Exception e) {
+            Log.d(TAG, "second catch");
+            Log.d(TAG, e.toString());
             e.printStackTrace();
         }
 
@@ -170,21 +195,22 @@ public class MainActivity extends Activity {
             if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
                     && null != data) {
                 // Get the Image from data
-                selectedImage = data.getData();
-                startAPICall();
+                String selectedImage = "https://images.pexels.com/photos/356378/pexels-photo-356378.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500";
+                Log.d(TAG, selectedImage);
+                startAPICall(selectedImage);
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
                 // Get the cursor
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                // Move to first row
-                cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
-                ImageView imgView = (ImageView) findViewById(R.id.imgView);
-                // Set the Image in ImageView after decoding the String
-                imgView.setImageBitmap(BitmapFactory
-                                .decodeFile(imgDecodableString));
+//                Cursor cursor = getContentResolver().query(selectedImage,
+//                        filePathColumn, null, null, null);
+//                // Move to first row
+//                cursor.moveToFirst();
+//                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                imgDecodableString = cursor.getString(columnIndex);
+//                cursor.close();
+//                ImageView imgView = (ImageView) findViewById(R.id.imgView);
+//                // Set the Image in ImageView after decoding the String
+//                imgView.setImageBitmap(BitmapFactory
+//                                .decodeFile(imgDecodableString));
 
 
             } else {
@@ -196,8 +222,28 @@ public class MainActivity extends Activity {
                     .show();
         }
     }
-    public void processResponse(JSONObject response) {
-        return;
-    }
 
-}
+
+    public void processResponse(JSONObject response) {
+        String jsonstring = response.toString();
+        try {
+            Log.d(TAG, response.toString(4));
+        } catch (JSONException p) {
+            Log.d(TAG, "JSONExcpn");
+        }
+
+        for(int i = 0; i < response.names().length(); i++){
+            try {
+                Log.v(TAG, "key = " + response.names().getString(i) + " value = " + response.get(response.names().getString(i)));
+            } catch(JSONException e) {
+                Log.v(TAG, "key = no key found");
+        }
+        }
+
+
+                TextView textView = findViewById(R.id.textView);
+                Log.d(TAG, "https://vision.googleapis.com/v1/images:annotate");
+                textView.setText(jsonstring);
+            }
+
+        }
