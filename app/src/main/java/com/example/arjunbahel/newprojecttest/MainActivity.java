@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -229,7 +230,7 @@ public class MainActivity extends Activity {
         try {
             Log.d(TAG, response.toString(4));
         } catch (JSONException p) {
-            Log.d(TAG, "JSONExcpn");
+            Log.d(TAG, "JSONException");
         }
 
         for(int i = 0; i < response.names().length(); i++){
@@ -244,6 +245,7 @@ public class MainActivity extends Activity {
                 TextView textView = findViewById(R.id.textView);
                 Log.d(TAG, "https://vision.googleapis.com/v1/images:annotate");
                 textView.setText(jsonstring);
+                textView.setMovementMethod(new ScrollingMovementMethod());
             }
 
         }
