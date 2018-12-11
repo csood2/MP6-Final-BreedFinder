@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -145,7 +146,7 @@ public class MainActivity extends Activity {
             array.put(0, myobj);
             JSONObject tp = new JSONObject();
             tp.put("type", "LABEL_DETECTION");
-            tp.put("maxResults", 10);
+            tp.put("maxResults", 5);
             JSONArray ftr = new JSONArray();
             ftr.put(0, tp);
             myobj.put("features", ftr);
@@ -187,20 +188,23 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (!checkPermission()) {
-            Toast.makeText(this, "Go to the settings and enable storage access",
-                    Toast.LENGTH_LONG).show();
-        }
+        //if (!checkPermission()) {
+        //Toast.makeText(this, "Go to the settings and enable storage access",
+        //Toast.LENGTH_LONG).show();
+        //}
         try {
             // When an Image is picked
-            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
-                    && null != data) {
-                // Get the Image from data
-                String selectedImage = "https://images.pexels.com/photos/356378/pexels-photo-356378.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500";
-                Log.d(TAG, selectedImage);
-                startAPICall(selectedImage);
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                // Get the cursor
+            //if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
+            //&& null != data) {
+            // Get the Image from data
+
+
+            EditText edit = findViewById(R.id.editText);
+            String selectedImage = edit.getText().toString();
+            Log.d(TAG, selectedImage);
+            startAPICall(selectedImage);
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            // Get the cursor
 //                Cursor cursor = getContentResolver().query(selectedImage,
 //                        filePathColumn, null, null, null);
 //                // Move to first row
@@ -214,37 +218,93 @@ public class MainActivity extends Activity {
 //                                .decodeFile(imgDecodableString));
 
 
-            } else {
-                Toast.makeText(this, "You have not picked an Image",
-                        Toast.LENGTH_LONG).show();
-            }
+//            } else {
+//                Toast.makeText(this, "You have not picked an Image",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//        } catch (Exception e) {
+//            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+//                    .show();
+//        }
         } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     .show();
         }
     }
 
 
     public void processResponse(JSONObject response) {
-        String jsonstring = response.toString();
+        JSONArray arr = new JSONArray();
         try {
-            Log.d(TAG, response.toString(4));
+            arr = response.getJSONArray("responses");
+        } catch (Exception e) {
+            Log.d(TAG, "No response named array found");
+        }
+        JSONObject annotations = new JSONObject();
+        try {
+            annotations =  arr.getJSONObject(0);
+
+
+        } catch (Exception a) {
+            Log.d(TAG, "No 0 element  in the responses array");
+        }
+
+        JSONArray arrayofannotations = new JSONArray();
+
+        try {
+            arrayofannotations = annotations.getJSONArray("labelAnnotations");
+        } catch (Exception t) {
+            Log.d(TAG, "did not extract array");
+        }
+        JSONObject list4 = new JSONObject();
+        List<String> desc = new ArrayList<>();
+        for (int kl = 0; kl < 5; kl++) {
+            try {
+                list4 = arrayofannotations.getJSONObject(kl);
+            } catch (Exception l) {
+                Log.d(TAG, "item in annottation array not found");
+            }
+            try {
+                String descthis;
+                descthis = list4.get("description").toString();
+                desc.add(descthis);
+                desc.add("\n");
+                Log.d(TAG, descthis);
+            } catch (Exception j)  {
+                Log.d(TAG, "Did not get desc");
+            }
+        }
+
+        try {
+            Log.d(TAG, arrayofannotations.toString(4));
         } catch (JSONException p) {
             Log.d(TAG, "JSONException");
         }
+//        //JSONObject obj = new JSONObject();
+//        //obj = response;
+//        //JSONArray rspns = obj.getJSONArray("responses");
+//
+//
+//        for(int i = 0; i < response.names().length(); i++){
+//            try {
+//
+//                [0].get("labelAnnotations").get("description");
+//            } catch(JSONException e) {
+//                Log.v(TAG, "key = no key found");
+//        }
+//        }
 
-        for(int i = 0; i < response.names().length(); i++){
-            try {
-                Log.v(TAG, "key = " + response.names().getString(i) + " value = " + response.get(response.names().getString(i)));
-            } catch(JSONException e) {
-                Log.v(TAG, "key = no key found");
-        }
-        }
 
 
                 TextView textView = findViewById(R.id.textView);
                 Log.d(TAG, "https://vision.googleapis.com/v1/images:annotate");
-                textView.setText(jsonstring);
+                try {
+                    textView.setText(desc.get(8).replace("b", "B"));
+
+                    //.toString().replace(",", "").replace("[", "").replace("]", "")
+                } catch (Exception e) {
+                    Log.d(TAG, "unable to print");
+        }
                 textView.setMovementMethod(new ScrollingMovementMethod());
             }
 

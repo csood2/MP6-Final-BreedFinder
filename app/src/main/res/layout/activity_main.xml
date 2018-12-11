@@ -10,10 +10,15 @@
         android:id="@+id/textView"
         android:layout_width="337dp"
         android:layout_height="267dp"
-        android:scrollbars = "vertical"
-        android:text="Choose image to display breed"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/candal"
+        android:gravity="center"
+        android:scrollbars="vertical"
+        android:text="Enter link to image"
+        android:textAlignment="center"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLoadPicture" />
 
@@ -21,10 +26,11 @@
         android:id="@+id/buttonLoadPicture"
         android:layout_width="328dp"
         android:layout_height="53dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="120dp"
         android:layout_marginBottom="52dp"
         android:onClick="loadImagefromGallery"
-        android:text="Process Image"
+        android:text="Show Breed"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,14 +40,15 @@
     <EditText
         android:id="@+id/editText"
         android:layout_width="329dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="42dp"
         android:ems="10"
+        android:hint="Enter the link to the image"
         android:inputType="textPersonName"
-        android:text="Enter the link to the image"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="26dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
