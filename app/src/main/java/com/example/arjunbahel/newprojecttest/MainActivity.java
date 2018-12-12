@@ -85,7 +85,7 @@ import org.json.JSONObject;
 
 import java.util.Base64;
 public class MainActivity extends Activity {
-    public final static String TAG = "BREEDPROO";
+    public final static String TAG = "BREEDPRO";
 
 
     private boolean checkPermission() {
@@ -300,7 +300,8 @@ Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                 TextView textView = findViewById(R.id.textView);
                 Log.d(TAG, "https://vision.googleapis.com/v1/images:annotate");
                 try {
-                    textView.setText(desc.get(8).replace("b", "B"));
+                    String setText = desc.get(8).substring(0, 1).toUpperCase() + desc.get(8).substring(1, desc.get(8).length());
+                    textView.setText(setText);
 
                     //.toString().replace(",", "").replace("[", "").replace("]", "")
                 } catch (Exception e) {
