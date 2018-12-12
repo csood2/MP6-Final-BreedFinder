@@ -109,7 +109,6 @@ public class MainActivity extends Activity {
 
 
     private static int RESULT_LOAD_IMG = 1;
-    String imgDecodableString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +121,8 @@ public class MainActivity extends Activity {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // Start the Intent
-        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+        //startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+        onActivityResult();
 
     }
 
@@ -185,9 +185,10 @@ public class MainActivity extends Activity {
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    //@Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult() {
+        //super.onActivityResult(requestCode, resultCode, data);
         //if (!checkPermission()) {
         //Toast.makeText(this, "Go to the settings and enable storage access",
         //Toast.LENGTH_LONG).show();
