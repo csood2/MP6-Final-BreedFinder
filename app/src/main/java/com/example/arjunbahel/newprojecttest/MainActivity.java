@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -208,10 +209,14 @@ public class MainActivity extends Activity {
             // Get the Image from data
 
 
+
+
+
             EditText edit = findViewById(R.id.editText);
             String selectedImage = edit.getText().toString();
             Log.d(TAG, selectedImage);
             startAPICall(selectedImage);
+            //hideKeyboard();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
             // Get the cursor
 //                Cursor cursor = getContentResolver().query(selectedImage,
@@ -240,6 +245,17 @@ Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     .show();
         }
     }
+
+//    public static void hideKeyboard(Activity activity) {
+//        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+//        //Find the currently focused view, so we can grab the correct window token from it.
+//        View view = activity.getCurrentFocus();
+//        //If no view currently has focus, create a new one, just so we can grab a window token from it
+//        if (view == null) {
+//            view = new View(activity);
+//        }
+//        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//    }
 
 
     public void processResponse(JSONObject response) {
@@ -309,7 +325,7 @@ Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                 Log.d(TAG, "https://vision.googleapis.com/v1/images:annotate");
                 try {
                     String setText = desc.get(8).substring(0, 1).toUpperCase() + desc.get(8).substring(1, desc.get(8).length());
-                    textView.setText(setText);
+                    textView.setText("It's a " + setText + "!");
 
                     //.toString().replace(",", "").replace("[", "").replace("]", "")
                 } catch (Exception e) {
