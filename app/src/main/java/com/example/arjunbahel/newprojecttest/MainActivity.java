@@ -132,10 +132,15 @@ public class MainActivity extends Activity {
 
     public static RequestQueue requestQueue;
 
+    public void errorToast() {
+        Toast.makeText(this, "Sorry, URL not valid", Toast.LENGTH_SHORT).show();
+    }
+
 
 
 
     void startAPICall(String givenImage) {
+        Toast.makeText(this, "Detecting Breed... ", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "here");
         try {
             ImageView imageView = findViewById(R.id.imageView2);
@@ -177,8 +182,11 @@ public class MainActivity extends Activity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(final VolleyError error) {
+                    errorToast();
                     Log.w(TAG, "problem");
                     Log.w(TAG, error.toString());
+
+
                 }
             });
             Log.d(TAG, "before requestQueue");
@@ -216,6 +224,8 @@ public class MainActivity extends Activity {
             String selectedImage = edit.getText().toString();
             Log.d(TAG, selectedImage);
             startAPICall(selectedImage);
+            InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.hideSoftInputFromWindow(edit.getWindowToken(), 0);
             //hideKeyboard();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
             // Get the cursor
@@ -329,6 +339,7 @@ Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
 
                     //.toString().replace(",", "").replace("[", "").replace("]", "")
                 } catch (Exception e) {
+                    Toast.makeText(this, "URL not valid", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "unable to print");
         }
                 textView.setMovementMethod(new ScrollingMovementMethod());
