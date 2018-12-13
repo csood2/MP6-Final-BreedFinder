@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
             return true;
         } else {
 
-//If the app doesn’t have this permission, then return false//
+//If the app doesn’t have this permission, then return falsee//
 
             return false;
         }
