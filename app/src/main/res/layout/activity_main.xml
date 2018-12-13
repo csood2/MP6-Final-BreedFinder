@@ -9,14 +9,14 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="337dp"
-        android:layout_height="267dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="260dp"
         android:fontFamily="@font/candal"
         android:gravity="center"
         android:scrollbars="vertical"
         android:text="Enter link to image"
         android:textAlignment="center"
-        android:textSize="40sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,5 +50,17 @@
         app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="261dp"
+        android:layout_height="248dp"
+        android:background="@mipmap/ic_launcher"
+        android:baselineAlignBottom="false"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/avatars[12]" />
 
 </android.support.constraint.ConstraintLayout>

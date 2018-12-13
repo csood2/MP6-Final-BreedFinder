@@ -36,6 +36,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -132,6 +133,7 @@ public class MainActivity extends Activity {
     void startAPICall(String givenImage) {
         Log.d(TAG, "here");
         try {
+            //Picasso.with(null).load(givenImage).into(image);
             Log.d(TAG, givenImage);
             Log.d(TAG, "try");
             JSONObject req = new JSONObject();
