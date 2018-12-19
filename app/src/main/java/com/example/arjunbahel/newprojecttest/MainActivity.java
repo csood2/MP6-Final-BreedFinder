@@ -1,7 +1,5 @@
 package com.example.arjunbahel.newprojecttest;
 
-
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -200,11 +198,6 @@ public class MainActivity extends Activity {
 
         try {
 
-
-
-
-
-
             EditText edit = findViewById(R.id.editText);
             String selectedImage = edit.getText().toString();
             Log.d(TAG, selectedImage);
@@ -222,9 +215,6 @@ Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     .show();
         }
     }
-
-
-
 
     public void processResponse(JSONObject response) {
         JSONArray arr = new JSONArray();
@@ -273,8 +263,6 @@ Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
         } catch (JSONException p) {
             Log.d(TAG, "JSONException");
         }
-
-
 
                 TextView textView = findViewById(R.id.textView);
                 Log.d(TAG, "https://vision.googleapis.com/v1/images:annotate");
