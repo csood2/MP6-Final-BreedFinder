@@ -94,17 +94,11 @@ public class MainActivity extends Activity {
 
     private boolean checkPermission() {
 
-//Check for READ_EXTERNAL_STORAGE access, using ContextCompat.checkSelfPermission()//
-
         int result = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
-
-//If the app does have this permission, then return true//
 
         if (result == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {
-
-//If the app doesn’t have this permission, then return falsee//
 
             return false;
         }
@@ -121,11 +115,10 @@ public class MainActivity extends Activity {
     }
 
     public void loadImagefromGallery(View view) {
-        // Create intent to Open Image applications like Gallery, Google Photos
+
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        // Start the Intent
-        //startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+
         onActivityResult();
 
     }
@@ -202,19 +195,11 @@ public class MainActivity extends Activity {
     }
 
 
-    //@Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
     protected void onActivityResult() {
-        //super.onActivityResult(requestCode, resultCode, data);
-        //if (!checkPermission()) {
-        //Toast.makeText(this, "Go to the settings and enable storage access",
-        //Toast.LENGTH_LONG).show();
-        //}
+
         try {
-            // When an Image is picked
-            //if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK
-            //&& null != data) {
-            // Get the Image from data
+
 
 
 
@@ -226,46 +211,19 @@ public class MainActivity extends Activity {
             startAPICall(selectedImage);
             InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             mgr.hideSoftInputFromWindow(edit.getWindowToken(), 0);
-            //hideKeyboard();
+
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            // Get the cursor
-//                Cursor cursor = getContentResolver().query(selectedImage,
-//                        filePathColumn, null, null, null);
-//                // Move to first row
-//                cursor.moveToFirst();
-//                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                imgDecodableString = cursor.getString(columnIndex);
-//                cursor.close();
-//                ImageView imgView = (ImageView) findViewById(R.id.imgView);
-//                // Set the Image in ImageView after decoding the String
-//                imgView.setImageBitmap(BitmapFactory
-//                                .decodeFile(imgDecodableString));
 
 
-//            } else {
-//                Toast.makeText(this, "You have not picked an Image",
-//                        Toast.LENGTH_LONG).show();
-//            }
-//        } catch (Exception e) {
-//            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
-//                    .show();
-//        }
+
+
         } catch (Exception e) {
 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     .show();
         }
     }
 
-//    public static void hideKeyboard(Activity activity) {
-//        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-//        //Find the currently focused view, so we can grab the correct window token from it.
-//        View view = activity.getCurrentFocus();
-//        //If no view currently has focus, create a new one, just so we can grab a window token from it
-//        if (view == null) {
-//            view = new View(activity);
-//        }
-//        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//    }
+
 
 
     public void processResponse(JSONObject response) {
@@ -315,19 +273,6 @@ Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
         } catch (JSONException p) {
             Log.d(TAG, "JSONException");
         }
-//        //JSONObject obj = new JSONObject();
-//        //obj = response;
-//        //JSONArray rspns = obj.getJSONArray("responses");
-//
-//
-//        for(int i = 0; i < response.names().length(); i++){
-//            try {
-//
-//                [0].get("labelAnnotations").get("description");
-//            } catch(JSONException e) {
-//                Log.v(TAG, "key = no key found");
-//        }
-//        }
 
 
 
@@ -337,7 +282,7 @@ Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     String setText = desc.get(8).substring(0, 1).toUpperCase() + desc.get(8).substring(1, desc.get(8).length());
                     textView.setText("It's a " + setText + "!");
 
-                    //.toString().replace(",", "").replace("[", "").replace("]", "")
+
                 } catch (Exception e) {
                     Toast.makeText(this, "URL not valid", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "unable to print");
